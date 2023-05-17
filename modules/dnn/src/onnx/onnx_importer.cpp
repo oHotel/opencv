@@ -2137,6 +2137,7 @@ void ONNXImporter::parseSqueeze(LayerParams& layerParams, const opencv_onnx::Nod
         for (int i = 0; i < axes_dict.size(); ++i)
         {
             int axis = axes_dict.getIntValue(i);
+            axis = normalize_axis(axis, inpShape.size());
             CV_CheckLE(axis, static_cast<int>(inpShape.size()), "Squeeze axis");
             maskedAxes[axis] = inpShape[axis] == 1;
         }
@@ -2152,6 +2153,7 @@ void ONNXImporter::parseSqueeze(LayerParams& layerParams, const opencv_onnx::Nod
             for (int i = 0; i < axesLen; i++)
             {
                 int axis = axesMat.at<int>(i);
+                axis = normalize_axis(axis, inpShape.size());
                 CV_CheckLE(axis, static_cast<int>(inpShape.size()), "Squeeze axis");
                 maskedAxes[axis] = inpShape[axis] == 1;
             }
